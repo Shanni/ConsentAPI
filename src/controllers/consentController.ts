@@ -1,6 +1,7 @@
 import { randomUUID } from "crypto";
 import consentModel, { IConsent } from "../models/consent.model";
 import { IConsentOnput } from "../types/consent";
+import { validURL } from "../libraries/checkFormat";
 
 interface ICreateConsentInput {
   name: string;
@@ -11,6 +12,10 @@ async function createConsent({
   name,
   consentUrl,
 }: ICreateConsentInput): Promise<IConsentOnput> {
+  if (!validURL(consentUrl)) {
+    throw new Error("Invalid URL");
+  }
+
   const consent = await consentModel.create({
     id: randomUUID(),
     name: name,
@@ -32,13 +37,16 @@ async function updateConsent(
     })
     .sort({ createdAt: -1 });
 
-  console.log(consents);
   if (consents.length == 0) {
     throw new Error(`Consent not found, targetId: ${targetId}`);
   }
 
   if (!consentUrl) {
     throw new Error("Must provide a url.");
+  }
+
+  if (!validURL(consentUrl)) {
+    throw new Error("Invalid URL");
   }
 
   const consentNew = await consentModel.create({
