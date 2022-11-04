@@ -25,10 +25,15 @@ async function updateConsent(
   targetId: string,
   consentUrl: string
 ): Promise<IConsentOnput> {
-  const consent = await consentModel.findOne({
-    id: targetId,
-  });
-  if (!consent) {
+  // find out the lastest version of the consent
+  const consents = await consentModel
+    .find({
+      id: targetId,
+    })
+    .sort({ createdAt: -1 });
+
+  console.log(consents);
+  if (consents.length == 0) {
     throw new Error(`Consent not found, targetId: ${targetId}`);
   }
 
@@ -37,10 +42,10 @@ async function updateConsent(
   }
 
   const consentNew = await consentModel.create({
-    id: randomUUID(),
-    name: consent.name,
+    id: consents[0].id,
+    name: consents[0].name,
     consentUrl: consentUrl,
-    version: consent.version + 1,
+    version: consents[0].version + 1,
   });
 
   return convertConsentOutput(consentNew);
