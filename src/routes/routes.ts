@@ -1,30 +1,46 @@
 import { Application } from "express";
-// import { TRoutesInput } from '../types/routes';
 import UserController from "../controllers/consentController";
 
 export default (app: Application) => {
-  app.post("/consent/target", async (req, res) => {
+  app.post("/consent/target", async (req, res, next) => {
     try {
-      const consent = await UserController.CreateConsent({
+      const consent = await UserController.createConsent({
         name: req.body.name,
         consentUrl: req.body.consent_url,
       });
       return res.send(consent);
     } catch (e) {
-      console.log("bug");
+      next();
     }
   });
 
-  app.get("/consent/target/:targetId", async (req, res) => {
+  app.patch("/consent/target/:targetId", async (req, res, next) => {
     try {
-      const consent = await UserController.GetConsent(req.params.targetId);
-      return res.send(consent);
+      const consent = await UserController.updateConsent(
+        req.params.targetId,
+        req.body.consent_url
+      );
+      res.send(consent);
     } catch (e) {
-      if (e) {
-        res.sendStatus(404);
-      }
-      // TODO: proper logging
-      console.log(e);
+      next();
+    }
+  });
+
+  app.get("/consent/target/:targetId", async (req, res, next) => {
+    try {
+      const consents = await UserController.getConsent(req.params.targetId);
+      res.send(consents);
+    } catch (e) {
+      next();
+    }
+  });
+
+  app.get("/consent/target", async (req, res, next) => {
+    try {
+      const consents = await UserController.getAllConsent();
+      res.send(consents);
+    } catch (e) {
+      next();
     }
   });
 };
