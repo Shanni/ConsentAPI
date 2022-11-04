@@ -1,4 +1,4 @@
-#Consent API
+# Consent API
 
 
 Consent API captures consent data. Consent data is a record of user agreeing to something in an application. We need to be able to store what they agreed to, when they agreed to it, and if this agreement ever changes we need to be able to keep track of that.
