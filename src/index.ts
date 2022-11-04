@@ -23,9 +23,9 @@ app.use(logErrors);
 app.use(clientErrorHandler);
 app.use(errorHandler);
 
-app.get("/", (req: Request, res: Response) =>
-  res.send("Welcome to Consent API")
-);
+app.get("/", (req: Request, res: Response) => {
+  res.send("Welcome to Consent API");
+});
 
 routes(app);
 

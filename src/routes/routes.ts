@@ -10,7 +10,7 @@ export default (app: Application) => {
       });
       return res.send(consent);
     } catch (e) {
-      next();
+      next(e);
     }
   });
 
@@ -22,7 +22,7 @@ export default (app: Application) => {
       );
       res.send(consent);
     } catch (e) {
-      next();
+      next(e);
     }
   });
 
@@ -31,7 +31,7 @@ export default (app: Application) => {
       const consents = await UserController.getConsent(req.params.targetId);
       res.send(consents);
     } catch (e) {
-      next();
+      next(e);
     }
   });
 
@@ -40,7 +40,7 @@ export default (app: Application) => {
       const consents = await UserController.getAllConsent();
       res.send(consents);
     } catch (e) {
-      next();
+      next(e);
     }
   });
 };

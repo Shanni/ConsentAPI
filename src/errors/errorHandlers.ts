@@ -5,7 +5,7 @@ export function logErrors(err: Error, req: any, res: any, next: any) {
 
 export function clientErrorHandler(err: Error, req: any, res: any, next: any) {
   if (req.xhr) {
-    //res.status(500).send({ error: "Something failed!" });
+    // res.status(500).send({ error: "Something failed!" });
   } else {
     next(err);
   }
